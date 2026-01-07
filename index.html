@@ -33,35 +33,114 @@
       />
 
       <!-- BOX -->
-      <div class="container">
-        <!-- TELA 1 -->
-        <div id="tela-1" class="tela ativa">
-          <!-- <h2>Área Restrita</h2> -->
-          <p>Por favor, faça login para continuar.</p>
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Não é o que parece...</title>
 
-          <input type="text" placeholder="Usuário" />
-          <input type="password" placeholder="Criar senha" />
+    <link rel="stylesheet" href="css/style.css" />
+    <script src="js/script.js" defer></script>
+  </head>
 
-          <button onclick="trollarLogin()">Entrar</button>
-        </div>
+  <body>
+    <!-- BARRA SUPERIOR -->
+    <header class="navbar">
+      <nav>
+        <ul class="menu">
+          <li><a onclick="bloquear()">Início</a></li>
+          <li><a onclick="bloquear()">Opções</a></li>
+          <li><a onclick="bloquear()">Contatos</a></li>
+        </ul>
+      </nav>
+    </header>
 
-        <!-- TELA 2 -->
-        <div id="tela-2" class="tela">
-          <h2>Quase lá...</h2>
-          <p>Quanto é 2 + 2?</p>
+    
+    <!-- LAYOUT -->
+    <div class="layout">
+      <!-- IMAGEM LATERAL (APENAS TELA 1) -->
+      <img
+        src="imagens/aqui_oh.png"
+        id="imagem-do-esqueleto"
+        class="imagem-do-esqueleto"
+        alt="Esqueleto observando"
+      />
 
-          <button onclick="alert('Errado!')">5</button>
-          <button onclick="proximaTela(3)">4</button>
-        </div>
+      <!-- BOX -->
+<div class="container">
 
-        <!-- TELA 3 -->
-        <div id="tela-3" class="tela">
-          <h2>PARABÉNS!</h2>
-          <p>Receba chuva de bençãos</p>
-          🤣🤣🤣
-        </div>
-      </div>
+  <!-- TELA 1 -->
+  <div id="tela-1" class="tela ativa">
+    <p>Por favor, faça login para continuar.</p>
+
+    <input type="text" placeholder="Usuário" />
+    <input type="password" placeholder="Criar senha" />
+
+    <button onclick="trollarLogin()">Entrar</button>
+  </div>
+
+  <!-- TELA 2 -->
+  <div id="tela-2" class="tela">
+    <h2>Você deseja ganhar uma recompensa?</h2>
+    <p>Então vai precisar passar por alguns desafios</p>
+
+    <button onclick="proximaTela(3)">Avançar</button>
+  </div>
+
+  <!-- TELA 3 -->
+  <div id="tela-3" class="tela">
+    <h2>
+      1- Ajude Wallacy a raparigar, ele precisa de uma caipirinha
+      da rua da moeda!
+    </h2>
+
+    <button onclick="proximaTela(4)">Avançar</button>
+  </div>
+
+  <!-- TELA 4 (JOGO) -->
+  <div id="tela-4" class="tela">
+    <h2>Leve até o destino</h2>
+
+    <div id="area-jogo">
+      <img src="imagens/wallacy_bebum.png" 
+         id="jogador" alt="Wallacy Bebum" draggable="false">
+      <img src="imagens/rua_da_moeda.jpeg" 
+         id="chegada" alt="Chegada" draggable="false">
+
+      <div class="parede parede1"></div>
+      <div class="parede parede2"></div>
+
     </div>
+  </div>
+
+  <div id="tela-5" class="tela">
+    <p class="pergunta-texto"> 2- Quantas filhos juninho vitinho já abandonou?</p>
+
+    <div class="quiz-grid">
+        <button onclick="erroQuiz()">A) 1 </button>
+        <button onclick="erroQuiz()">B) 2 </button>
+        
+        <button onclick="erroQuiz()">C) 3 </button>
+        
+        <button onclick="acertoQuiz()">D) Muitos </button>
+    </div>
+</div>
+
+<div id="tela-6" class="tela">
+    
+    <img src="imagens/thiaguete.jpg" style="max-width: 70%; border: 2px solid var(--accent-color); border-radius: 10px;">
+    
+    <br><br>
+    
+    <button onclick="proximaTela(7)">Próximo Nível >></button>
+</div>
+
+<div id="tela-7" class="tela">
+    <h1>NÍVEL 7 BLOQUEADO</h1>
+    <p>Você chegou mais longe do que eu esperava...</p>
+    <p>(Coloque seu próximo desafio aqui)</p>
+</div>
 
     <!-- RODAPÉ -->
     <footer class="footer">eu tava com tempo ocioso</footer>

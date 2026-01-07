@@ -18,10 +18,12 @@ body {
   color: var(--text-color);
   font-family: "VT323", monospace;
   font-size: 1.5rem;
-  height: 100vh;
+
+  min-height: 100vh;
   margin: 0;
-  overflow: hidden;
+  overflow-x: hidden;
 }
+
 
 /* ===================================
    NAVBAR
@@ -116,6 +118,14 @@ button:hover {
   opacity: 0.8;
 }
 
+/* TELA 4 SEM BOX */
+.tela-4-ativa .container {
+  background: none;
+  border: none;
+  box-shadow: none;
+  padding: 0;
+}
+
 /* ===================================
    IMAGENS
    =================================== */
@@ -157,4 +167,115 @@ button:hover {
 @keyframes fadeIn {
   from { opacity: 0; }
   to   { opacity: 1; }
+}
+
+
+
+/* ===================================
+   JOGO DE WALLACY (CORRIGIDO)
+   =================================== */
+
+:root {
+    --accent-color: #9d00ff; /* Roxo Neon */
+}
+
+#area-jogo {
+    position: relative;
+    width: 700px;
+    height: 350px;
+    margin: 30px auto;
+    background-color: #111;
+    border: 3px solid var(--accent-color);
+    box-shadow: 0 0 15px var(--accent-color); /* Um brilho pra ficar chique */
+    overflow: hidden; /* Garante que nada saia da caixa */
+}
+
+/* Imagem arrastável */
+#jogador {
+    position: absolute;
+    width: 60px;
+    height: 60px; /* Importante definir altura para a colisão funcionar bem */
+    top: 20px;
+    left: 20px;
+    cursor: grab;
+    z-index: 10;
+    
+    /* CRUCIAL: Impede o comportamento nativo de arrastar imagem do navegador */
+    user-select: none;
+    -webkit-user-drag: none; 
+}
+
+#jogador:active {
+    cursor: grabbing;
+}
+
+/* Destino */
+#chegada {
+    position: absolute;
+    width: 70px;
+    right: 20px;
+    bottom: 20px;
+    user-select: none;
+    -webkit-user-drag: none; 
+}
+
+/* ===============================
+   LABIRINTO
+   =============================== */
+
+.parede {
+    position: absolute;
+    background-color: var(--accent-color);
+    box-shadow: 0 0 5px var(--accent-color);
+}
+
+/* ===============================
+   LABIRINTO (Novo Design Limpo)
+   =============================== */
+
+.parede {
+    position: absolute;
+    background-color: var(--accent-color);
+    box-shadow: 0 0 10px var(--accent-color); /* Brilho neon */
+    height: 20px; /* Paredes um pouco mais grossas para ver melhor */
+}
+
+/* Parede Superior: Começa na esquerda e vai quase até o fim */
+/* Obriga o jogador a ir para a Direita */
+.parede1 {
+    width: 580px; /* Deixa um buraco de 120px na direita */
+    top: 110px;   /* 1/3 da altura */
+    left: 0;
+    border-radius: 0 10px 10px 0; /* Arredonda a ponta direita */
+}
+
+/* Parede Inferior: Começa na direita e vem quase até o início */
+/* Obriga o jogador a ir para a Esquerda */
+.parede2 {
+    width: 580px; /* Deixa um buraco de 120px na esquerda */
+    top: 230px;   /* 2/3 da altura */
+    right: 0;     /* Grudado na direita */
+    border-radius: 10px 0 0 10px; /* Arredonda a ponta esquerda */
+}
+
+/* Estilo específico para o Quiz */
+.pergunta-texto {
+    font-size: 1.8rem;
+    color: var(--accent-color);
+    margin-bottom: 30px;
+    text-shadow: 1px 1px 0 #fff;
+}
+
+.quiz-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Duas colunas */
+    gap: 20px; /* Espaço entre os botões */
+    margin-top: 20px;
+}
+
+/* Ajuste para celular: botões ficam um embaixo do outro se a tela for pequena */
+@media (max-width: 600px) {
+    .quiz-grid {
+        grid-template-columns: 1fr;
+    }
 }
