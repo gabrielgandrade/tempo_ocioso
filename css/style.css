@@ -1,33 +1,35 @@
-/* ===================================
-   VARIÁVEIS
-   =================================== */
+/* ==========================================================================
+   1. VARIÁVEIS GLOBAIS
+   ========================================================================== */
 :root {
   --bg-color: #6e6e6e;
   --box-color: #111111;
-  --accent-color: #9d00ff;
+  --accent-color: #9d00ff; /* Roxo Neon */
   --text-color: #e0e0e0;
   --glow: 0 0 10px var(--accent-color),
           0 0 20px var(--accent-color);
 }
 
-/* ===================================
-   RESET E CONFIGURAÇÕES GERAIS
-   =================================== */
+/* ==========================================================================
+   2. CONFIGURAÇÕES GERAIS E RESET
+   ========================================================================== */
 body {
   background-color: var(--bg-color);
+  /* Se for usar imagem de fundo no futuro, descomente a linha abaixo: */
+  /* background-image: url('../imagens/seu-fundo.jpg'); */
+  
   color: var(--text-color);
   font-family: "VT323", monospace;
   font-size: 1.5rem;
 
   min-height: 100vh;
   margin: 0;
-  overflow-x: hidden;
+  overflow-x: hidden; /* Evita barra de rolagem horizontal indesejada */
 }
 
-
-/* ===================================
-   NAVBAR
-   =================================== */
+/* ==========================================================================
+   3. BARRA DE NAVEGAÇÃO (NAVBAR)
+   ========================================================================== */
 .navbar {
   position: fixed;
   top: 0;
@@ -52,25 +54,23 @@ body {
   cursor: pointer;
   text-decoration: none;
   color: var(--text-color);
+  transition: color 0.2s;
 }
 
 .menu a:hover {
   color: var(--accent-color);
 }
 
-/* ===================================
-   LAYOUT PRINCIPAL
-   =================================== */
+/* ==========================================================================
+   4. LAYOUT E CONTAINER PRINCIPAL
+   ========================================================================== */
 .layout {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  height: 100vh; /* Ocupa a altura total da tela */
 }
 
-/* ===================================
-   CONTAINER (BOX PRINCIPAL)
-   =================================== */
 .container {
   background-color: var(--box-color);
   border: 4px solid var(--accent-color);
@@ -80,28 +80,29 @@ body {
   text-align: center;
   border-radius: 10px;
   box-shadow: var(--glow);
+  
+  /* Importante para o z-index das imagens de erro funcionarem */
+  position: relative; 
+  z-index: 100; 
 }
 
-/* ===================================
-   TELAS
-   =================================== */
-.tela {
-  display: none;
+/* Remove a caixa visual apenas na tela do jogo (Tela 4) */
+.tela-4-ativa .container {
+  background: none;
+  border: none;
+  box-shadow: none;
+  padding: 0;
 }
 
-.tela.ativa {
-  display: block;
-  animation: fadeIn 0.5s;
-}
-
-/* ===================================
-   FORMULÁRIOS
-   =================================== */
+/* ==========================================================================
+   5. ELEMENTOS DE INTERFACE (Botões e Inputs)
+   ========================================================================== */
 input {
   width: 100%;
   padding: 10px;
   margin: 10px 0;
   box-sizing: border-box;
+  font-family: inherit; /* Herda a fonte do body */
 }
 
 button {
@@ -112,73 +113,47 @@ button {
   border-radius: 5px;
   cursor: pointer;
   margin-top: 10px;
+  font-family: inherit;
+  font-size: 1.2rem;
+  transition: opacity 0.2s;
 }
 
 button:hover {
   opacity: 0.8;
 }
 
-/* TELA 4 SEM BOX */
-.tela-4-ativa .container {
-  background: none;
-  border: none;
-  box-shadow: none;
-  padding: 0;
-}
-
-/* ===================================
-   IMAGENS
-   =================================== */
-
-/* Imagens dentro das telas */
-
-/* Imagem do esqueleto (fora do container) */
-.imagem-do-esqueleto {
-  width: 400px;
-  height: auto;
-  border: 4px solid var(--box-color);
-  border-radius: 10px;
-  margin-right: 40px; /* Adicione essa linha - ajuste o valor */
+/* ==========================================================================
+   6. CONTROLE DAS TELAS
+   ========================================================================== */
+.tela {
   display: none;
-  
 }
 
-/* ===================================
-   FOOTER
-   =================================== */
-.footer {
-  position: fixed;
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: 0.9rem;
-  opacity: 0.7;
-  width: 100%;
-  background-color: #000;
-  color: #ccc;
-  padding: 15px 0;
-  text-align: center;
-  border-top: 3px solid var(--accent-color);
+.tela.ativa {
+  display: block;
+  animation: fadeIn 0.5s;
 }
 
-/* ===================================
-   ANIMAÇÕES
-   =================================== */
 @keyframes fadeIn {
   from { opacity: 0; }
   to   { opacity: 1; }
 }
 
-
-
-/* ===================================
-   JOGO DE WALLACY (CORRIGIDO)
-   =================================== */
-
-:root {
-    --accent-color: #9d00ff; /* Roxo Neon */
+/* ==========================================================================
+   7. IMAGENS GERAIS
+   ========================================================================== */
+.imagem-do-esqueleto {
+  width: 400px;
+  height: auto;
+  border: 4px solid var(--box-color);
+  border-radius: 10px;
+  margin-right: 40px;
+  display: none; /* Controlado pelo JS */
 }
 
+/* ==========================================================================
+   8. JOGO DO WALLACY (LABIRINTO)
+   ========================================================================== */
 #area-jogo {
     position: relative;
     width: 700px;
@@ -186,25 +161,22 @@ button:hover {
     margin: 30px auto;
     background-color: #111;
     border: 3px solid var(--accent-color);
-    box-shadow: 0 0 15px var(--accent-color); /* Um brilho pra ficar chique */
+    box-shadow: 0 0 15px var(--accent-color);
     overflow: hidden; /* Garante que nada saia da caixa */
 }
 
-/* Imagem arrastável */
+/* Jogador */
 #jogador {
     position: absolute;
     width: 60px;
-    height: 60px; /* Importante definir altura para a colisão funcionar bem */
+    height: 60px;
     top: 20px;
     left: 20px;
     cursor: grab;
     z-index: 10;
-    
-    /* CRUCIAL: Impede o comportamento nativo de arrastar imagem do navegador */
     user-select: none;
     -webkit-user-drag: none; 
 }
-
 #jogador:active {
     cursor: grabbing;
 }
@@ -219,46 +191,31 @@ button:hover {
     -webkit-user-drag: none; 
 }
 
-/* ===============================
-   LABIRINTO
-   =============================== */
-
+/* Paredes */
 .parede {
     position: absolute;
     background-color: var(--accent-color);
-    box-shadow: 0 0 5px var(--accent-color);
+    box-shadow: 0 0 10px var(--accent-color);
+    height: 20px; 
 }
 
-/* ===============================
-   LABIRINTO (Novo Design Limpo)
-   =============================== */
-
-.parede {
-    position: absolute;
-    background-color: var(--accent-color);
-    box-shadow: 0 0 10px var(--accent-color); /* Brilho neon */
-    height: 20px; /* Paredes um pouco mais grossas para ver melhor */
-}
-
-/* Parede Superior: Começa na esquerda e vai quase até o fim */
-/* Obriga o jogador a ir para a Direita */
 .parede1 {
-    width: 580px; /* Deixa um buraco de 120px na direita */
-    top: 110px;   /* 1/3 da altura */
+    width: 580px; 
+    top: 110px;
     left: 0;
-    border-radius: 0 10px 10px 0; /* Arredonda a ponta direita */
+    border-radius: 0 10px 10px 0;
 }
 
-/* Parede Inferior: Começa na direita e vem quase até o início */
-/* Obriga o jogador a ir para a Esquerda */
 .parede2 {
-    width: 580px; /* Deixa um buraco de 120px na esquerda */
-    top: 230px;   /* 2/3 da altura */
-    right: 0;     /* Grudado na direita */
-    border-radius: 10px 0 0 10px; /* Arredonda a ponta esquerda */
+    width: 580px;
+    top: 230px; 
+    right: 0;
+    border-radius: 10px 0 0 10px;
 }
 
-/* Estilo específico para o Quiz */
+/* ==========================================================================
+   9. QUIZ
+   ========================================================================== */
 .pergunta-texto {
     font-size: 1.8rem;
     color: var(--accent-color);
@@ -268,14 +225,71 @@ button:hover {
 
 .quiz-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr; /* Duas colunas */
-    gap: 20px; /* Espaço entre os botões */
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
     margin-top: 20px;
 }
 
-/* Ajuste para celular: botões ficam um embaixo do outro se a tela for pequena */
 @media (max-width: 600px) {
     .quiz-grid {
         grid-template-columns: 1fr;
     }
+}
+
+/* ==========================================================================
+   10. SHITPOST (IMAGENS DE CANTO)
+   ========================================================================== */
+.img-canto {
+    position: fixed;
+    z-index: 50; /* Fica atrás da caixa principal (que é 100), mas na frente do fundo */
+    width: 130px;
+    pointer-events: none; /* Mouse atravessa */
+    
+    /* Filtros visuais */
+    filter: saturate(200%) contrast(120%);
+    opacity: 0.8;
+}
+
+/* Posicionamento dos Cantos */
+.canto-se { /* Superior Esquerdo */
+    top: 10px;
+    left: 10px;
+    transform: rotate(-15deg);
+}
+
+.canto-sd { /* Superior Direito */
+    top: 10px;
+    right: 10px;
+    transform: rotate(15deg);
+}
+
+.canto-ie { /* Inferior Esquerdo */
+    bottom: 10px;
+    left: 10px;
+    transform: rotate(5deg);
+}
+
+.canto-id { /* Inferior Direito */
+    bottom: 10px;
+    right: 10px;
+    transform: rotate(-20deg);
+}
+
+/* ==========================================================================
+   11. FOOTER (RODAPÉ)
+   ========================================================================== */
+.footer {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.9rem;
+  opacity: 0.7;
+  width: 100%;
+  background-color: #000;
+  color: #ccc;
+  padding: 15px 0;
+  text-align: center;
+  border-top: 3px solid var(--accent-color);
+  z-index: 1000;
 }
