@@ -1,30 +1,49 @@
 /* ==========================================================================
-   1. VARIÁVEIS GLOBAIS
+   1. VARIÁVEIS GLOBAIS (PALETA MODERNA)
    ========================================================================== */
 :root {
-  --bg-color: #6e6e6e;
-  --box-color: #111111;
-  --accent-color: #9d00ff; /* Roxo Neon */
-  --text-color: #e0e0e0;
-  --glow: 0 0 10px var(--accent-color),
-          0 0 20px var(--accent-color);
+  --bg-color: #0a0a0a;             /* Preto quase absoluto */
+  --box-color: rgba(20, 20, 20, 0.95); /* Fundo da caixa semi-transparente */
+  --accent-color: #8a2be2;         /* Roxo mais elegante (BlueViolet) */
+  --accent-hover: #7b1fa2;         /* Roxo mais escuro para hover */
+  --text-color: #f0f0f0;           /* Branco gelo */
+  --text-secondary: #aaaaaa;       /* Cinza para textos menores */
+  
+  /* Sombra suave e moderna */
+  --shadow-soft: 0 8px 30px rgba(0, 0, 0, 0.5);
+  --shadow-neon: 0 0 15px rgba(138, 43, 226, 0.4);
 }
 
 /* ==========================================================================
    2. CONFIGURAÇÕES GERAIS E RESET
    ========================================================================== */
+* {
+  box-sizing: border-box; 
+}
+
 body {
   background-color: var(--bg-color);
-  /* Se for usar imagem de fundo no futuro, descomente a linha abaixo: */
-  /* background-image: url('../imagens/seu-fundo.jpg'); */
-  
+  background-image: url('../imagens/legal.jpg'); 
+  background-size: cover;       
+  background-repeat: no-repeat; 
+  background-attachment: fixed; 
+  background-position: center;  
+
   color: var(--text-color);
-  font-family: "VT323", monospace;
-  font-size: 1.5rem;
+  font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  font-size: 1.1rem;
+  line-height: 1.6;
 
   min-height: 100vh;
   margin: 0;
-  overflow-x: hidden; /* Evita barra de rolagem horizontal indesejada */
+  overflow-x: hidden; 
+}
+
+h1, h2 {
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  color: white;
+  margin-bottom: 20px;
 }
 
 /* ==========================================================================
@@ -34,11 +53,12 @@ body {
   position: fixed;
   top: 0;
   width: 100%;
-  background-color: var(--box-color);
-  border-bottom: 3px solid var(--accent-color);
-  box-shadow: var(--glow);
-  padding: 10px 0;
+  background-color: rgba(10, 10, 10, 0.85); 
+  backdrop-filter: blur(10px); 
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1); 
+  padding: 15px 0;
   z-index: 1000;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
 }
 
 .menu {
@@ -53,12 +73,17 @@ body {
 .menu a {
   cursor: pointer;
   text-decoration: none;
-  color: var(--text-color);
-  transition: color 0.2s;
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: all 0.3s ease;
 }
 
 .menu a:hover {
   color: var(--accent-color);
+  text-shadow: 0 0 8px rgba(138, 43, 226, 0.5);
 }
 
 /* ==========================================================================
@@ -68,22 +93,23 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh; /* Ocupa a altura total da tela */
+  min-height: 100vh;
+  padding-top: 60px; 
 }
 
 .container {
   background-color: var(--box-color);
-  border: 4px solid var(--accent-color);
-  padding: 40px;
+  border: 1px solid rgba(255, 255, 255, 0.1); 
+  border-top: 1px solid rgba(255, 255, 255, 0.2); 
+  padding: 50px;
   width: 100%;
   max-width: 500px;
   text-align: center;
-  border-radius: 10px;
-  box-shadow: var(--glow);
-  
-  /* Importante para o z-index das imagens de erro funcionarem */
+  border-radius: 16px; 
+  box-shadow: var(--shadow-soft);
   position: relative; 
   z-index: 100; 
+  transition: max-width 0.3s ease; 
 }
 
 /* Remove a caixa visual apenas na tela do jogo (Tela 4) */
@@ -92,6 +118,8 @@ body {
   border: none;
   box-shadow: none;
   padding: 0;
+  max-width: 800px; 
+  width: 100%;      
 }
 
 /* ==========================================================================
@@ -99,27 +127,48 @@ body {
    ========================================================================== */
 input {
   width: 100%;
-  padding: 10px;
-  margin: 10px 0;
+  padding: 15px;
+  margin: 15px 0;
   box-sizing: border-box;
-  font-family: inherit; /* Herda a fonte do body */
+  background-color: #1a1a1a;
+  border: 1px solid #333;
+  border-radius: 8px;
+  color: white;
+  font-family: inherit;
+  font-size: 1rem;
+  transition: border-color 0.3s;
+}
+
+input:focus {
+  outline: none;
+  border-color: var(--accent-color);
 }
 
 button {
-  background-color: var(--accent-color);
+  background: linear-gradient(135deg, var(--accent-color), #6a0dad);
   color: white;
   border: none;
-  padding: 10px 20px;
-  border-radius: 5px;
+  padding: 14px 28px;
+  border-radius: 8px;
   cursor: pointer;
-  margin-top: 10px;
+  margin-top: 15px;
   font-family: inherit;
-  font-size: 1.2rem;
-  transition: opacity 0.2s;
+  font-weight: 600;
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  box-shadow: 0 4px 15px rgba(138, 43, 226, 0.3);
+  transition: transform 0.2s, box-shadow 0.2s, filter 0.2s;
 }
 
 button:hover {
-  opacity: 0.8;
+  transform: translateY(-2px); 
+  box-shadow: 0 6px 20px rgba(138, 43, 226, 0.5);
+  filter: brightness(1.1);
+}
+
+button:active {
+  transform: translateY(0);
 }
 
 /* ==========================================================================
@@ -131,24 +180,24 @@ button:hover {
 
 .tela.ativa {
   display: block;
-  animation: fadeIn 0.5s;
+  animation: slideUp 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to   { opacity: 1; }
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
 /* ==========================================================================
    7. IMAGENS GERAIS
    ========================================================================== */
 .imagem-do-esqueleto {
-  width: 400px;
+  width: 350px; 
   height: auto;
-  border: 4px solid var(--box-color);
-  border-radius: 10px;
+  border-radius: 12px;
+  box-shadow: var(--shadow-soft);
   margin-right: 40px;
-  display: none; /* Controlado pelo JS */
+  display: none; 
 }
 
 /* ==========================================================================
@@ -159,13 +208,13 @@ button:hover {
     width: 700px;
     height: 350px;
     margin: 30px auto;
-    background-color: #111;
-    border: 3px solid var(--accent-color);
-    box-shadow: 0 0 15px var(--accent-color);
-    overflow: hidden; /* Garante que nada saia da caixa */
+    background-color: #050505; 
+    border: 2px solid var(--accent-color);
+    border-radius: 8px; 
+    box-shadow: 0 0 30px rgba(0,0,0,0.8);
+    overflow: hidden; 
 }
 
-/* Jogador */
 #jogador {
     position: absolute;
     width: 60px;
@@ -176,12 +225,12 @@ button:hover {
     z-index: 10;
     user-select: none;
     -webkit-user-drag: none; 
+    filter: drop-shadow(0 2px 5px rgba(0,0,0,0.5));
 }
 #jogador:active {
     cursor: grabbing;
 }
 
-/* Destino */
 #chegada {
     position: absolute;
     width: 70px;
@@ -191,12 +240,12 @@ button:hover {
     -webkit-user-drag: none; 
 }
 
-/* Paredes */
 .parede {
     position: absolute;
     background-color: var(--accent-color);
-    box-shadow: 0 0 10px var(--accent-color);
+    box-shadow: 0 0 15px var(--accent-color);
     height: 20px; 
+    border-radius: 4px;
 }
 
 .parede1 {
@@ -217,17 +266,29 @@ button:hover {
    9. QUIZ
    ========================================================================== */
 .pergunta-texto {
-    font-size: 1.8rem;
+    font-size: 1.5rem;
     color: var(--accent-color);
     margin-bottom: 30px;
-    text-shadow: 1px 1px 0 #fff;
+    font-weight: bold;
 }
 
 .quiz-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 20px;
+    gap: 15px;
     margin-top: 20px;
+}
+
+.quiz-grid button {
+    background: transparent;
+    border: 1px solid var(--accent-color);
+    color: var(--text-color);
+    margin: 0;
+}
+
+.quiz-grid button:hover {
+    background: var(--accent-color);
+    color: white;
 }
 
 @media (max-width: 600px) {
@@ -237,42 +298,62 @@ button:hover {
 }
 
 /* ==========================================================================
-   10. SHITPOST (IMAGENS DE CANTO)
+   10. DESAFIO DAS ESFIHAS
    ========================================================================== */
-.img-canto {
-    position: fixed;
-    z-index: 50; /* Fica atrás da caixa principal (que é 100), mas na frente do fundo */
-    width: 130px;
-    pointer-events: none; /* Mouse atravessa */
-    
-    /* Filtros visuais */
-    filter: saturate(200%) contrast(120%);
-    opacity: 0.8;
+.slots-container {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin: 30px 0;
 }
 
-/* Posicionamento dos Cantos */
-.canto-se { /* Superior Esquerdo */
-    top: 10px;
-    left: 10px;
-    transform: rotate(-15deg);
+.slot {
+    width: 100px;
+    height: 100px;
+    border: 2px dashed rgba(255, 255, 255, 0.3);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    background-color: rgba(0,0,0,0.3);
+    color: var(--text-secondary);
+    transition: all 0.3s ease;
 }
 
-.canto-sd { /* Superior Direito */
-    top: 10px;
-    right: 10px;
-    transform: rotate(15deg);
+.slot.preenchido {
+    border-style: solid;
+    border-color: var(--accent-color);
+    background-color: var(--accent-color);
+    color: white;
+    box-shadow: 0 0 15px var(--accent-color);
+    transform: scale(1.05);
 }
 
-.canto-ie { /* Inferior Esquerdo */
-    bottom: 10px;
-    left: 10px;
-    transform: rotate(5deg);
+.opcoes-esfihas {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 20px;
 }
 
-.canto-id { /* Inferior Direito */
-    bottom: 10px;
-    right: 10px;
-    transform: rotate(-20deg);
+.esfihas {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 15px 20px;
+    margin: 0;
+    font-size: 1rem;
+}
+
+.esfihas:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-3px);
+}
+
+.btn-escondido {
+    opacity: 0;
+    pointer-events: none;
+    transform: scale(0.8);
 }
 
 /* ==========================================================================
@@ -281,15 +362,152 @@ button:hover {
 .footer {
   position: fixed;
   bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: 0.9rem;
-  opacity: 0.7;
+  left: 0; 
   width: 100%;
-  background-color: #000;
-  color: #ccc;
+  background-color: #050505;
+  color: #666;
   padding: 15px 0;
   text-align: center;
-  border-top: 3px solid var(--accent-color);
+  font-size: 0.85rem;
+  border-top: 1px solid #222;
   z-index: 1000;
 }
+
+
+/* ==========================================================================
+   12. TELA 9 (O FINAL SUPREMO) E CORTINAS
+   ========================================================================== */
+
+/* ==========================================================================
+   12. TELA 9 (FINAL ÉPICO - DARK & GOLD)
+   ========================================================================== */
+
+/* A TELA 9 - O AMBIENTE */
+#tela-9.ativa {
+    display: flex !important;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column; /* Organiza texto em cima da imagem */
+    
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw;
+    height: 100vh;
+    
+    /* Fundo Escuro com Holofote Central (DRAMÁTICO) */
+    background: radial-gradient(circle at center, #2a2a2a 0%, #000000 100%);
+    
+    z-index: 9990; 
+    overflow: hidden; /* Garante que nada vaze */
+}
+
+/* O Holofote de Luz Atrás da Imagem */
+.luz-divina {
+    position: absolute;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(255, 215, 0, 0.2) 0%, rgba(0,0,0,0) 70%);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: -1; /* Fica atrás da imagem */
+    animation: pulsarLuz 4s infinite alternate;
+}
+
+@keyframes pulsarLuz {
+    0% { transform: translate(-50%, -50%) scale(1); opacity: 0.5; }
+    100% { transform: translate(-50%, -50%) scale(1.5); opacity: 1; }
+}
+
+/* O Título */
+.titulo-final {
+    font-size: 3rem;
+    color: transparent;
+    background: linear-gradient(to right, #BF953F, #FCF6BA, #B38728, #FBF5B7);
+    -webkit-background-clip: text;
+    background-clip: text;
+    text-transform: uppercase;
+    letter-spacing: 5px;
+    margin-bottom: 20px;
+    text-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+    opacity: 0;
+    animation: subirTexto 1s ease 1s forwards; /* Aparece depois de 1s */
+}
+
+/* A IMAGEM DO TODO PODEROSO */
+#img-final {
+    /* FORÇA FICAR GRANDE */
+    height: 55vh; /* Ocupa 75% da altura da tela */
+    width: auto;  /* Mantém a proporção */
+    max-width: 90vw; /* Não deixa vazar na largura */
+    
+    /* Acabamento Premium */
+    border-radius: 15px;
+    border: 4px solid rgba(255, 215, 0, 0.3); /* Borda dourada sutil */
+    
+    /* Sombra Dourada (Glow) */
+    box-shadow: 0 0 40px rgba(255, 215, 0, 0.2), 
+                0 20px 50px rgba(0,0,0,0.8);
+    
+    /* Animação de Entrada */
+    opacity: 0;
+    transform: scale(0.8);
+}
+
+#img-final.aparecer {
+    /* Animação de entrada + Flutuação contínua */
+    animation: 
+        entradaTriunfal 2s cubic-bezier(0.2, 0.8, 0.2, 1) forwards,
+        flutuar 3s ease-in-out infinite alternate 2s; /* Começa a flutuar depois de 2s */
+}
+
+/* Animação 1: Entrada */
+@keyframes entradaTriunfal {
+    to { opacity: 1; transform: scale(1); }
+}
+
+/* Animação 2: Flutuar (Respiração) */
+@keyframes flutuar {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(-15px); }
+}
+
+/* Animação de Texto */
+@keyframes subirTexto {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* --- CONFETES (PARTÍCULAS) --- */
+.confete {
+    position: absolute;
+    width: 10px; height: 10px;
+    background-color: gold;
+    top: -10px;
+    opacity: 0.7;
+    animation: cair 5s linear infinite;
+}
+.c1 { left: 10%; animation-duration: 4s; background: #FCF6BA; }
+.c2 { left: 30%; animation-duration: 6s; background: #BF953F; width: 15px; height: 15px; }
+.c3 { left: 50%; animation-duration: 5s; background: white; }
+.c4 { left: 70%; animation-duration: 3.5s; background: #B38728; }
+.c5 { left: 90%; animation-duration: 4.5s; background: gold; width: 8px; height: 8px; }
+
+@keyframes cair {
+    0% { transform: translateY(-10vh) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+}
+
+/* AS CORTINAS (VERMELHO VELUDO) - MANTIDO */
+.cortina {
+    position: fixed;
+    top: 0; bottom: 0;
+    width: 0%; 
+    background: linear-gradient(to right, #4a0000, #7f0000, #a80000, #7f0000, #4a0000);
+    box-shadow: 0 0 30px rgba(100, 0, 0, 0.6);
+    z-index: 999999 !important; 
+    transition: width 1.5s ease-in-out;
+}
+#cortina-esquerda { left: 0; }
+#cortina-direita { right: 0; }
+.cortina.fechada { width: 50.5%; }

@@ -21,7 +21,7 @@ let offsetY = 0;
 
 
 /* ==========================================================================
-   SISTEMA DE NAVEGAÇÃO ENTRE TELAS
+   SISTEMA DE NAVEGAÇÃO (MISTURANDO IMAGENS E FUNDO PRETO)
    ========================================================================== */
 
 function proximaTela(numero) {
@@ -34,19 +34,72 @@ function proximaTela(numero) {
     const proxima = document.getElementById(`tela-${numero}`);
     if (proxima) proxima.classList.add("ativa");
 
-    // 3. Lógica específica do Esqueleto (Apenas Tela 1)
-    const imagem = document.getElementById("imagem-do-esqueleto");
-    if (numero === 1) {
-        imagem.style.display = "block";
-    } else {
-        imagem.style.display = "none";
+    // 3. Lógica do Esqueleto (Apenas Tela 1)
+    const imagemEsq = document.getElementById("imagem-do-esqueleto");
+    if (imagemEsq) { // Verificação de segurança
+        if (numero === 1) {
+            imagemEsq.style.display = "block";
+        } else {
+            imagemEsq.style.display = "none";
+        }
     }
 
-    // 4. Ajustes visuais específicos da Tela 4 (Jogo)
+    // 4. Ajustes da Tela 4 (Jogo)
     if (numero === 4) {
         document.body.classList.add("tela-4-ativa");
     } else {
         document.body.classList.remove("tela-4-ativa");
+    }
+
+    /* ======================================================
+       5. CONTROLE DE FUNDO (IMAGEM vs COR SÓLIDA)
+       ====================================================== */
+    const body = document.body;
+    let fundoEscolhido = ""; 
+
+    switch (numero) {
+        case 1: 
+            fundoEscolhido = "imagens/fundo-hacker.jpg"; // TELA 1: Tem imagem
+            break;
+            
+        case 2: 
+            fundoEscolhido = "imagens/auu.jpg"; // TELA 2: Fundo preto liso
+            break;
+
+        case 3: 
+            fundoEscolhido = "imagens/bar-do-moeda.jpg"; // TELA 3: Imagem de novo
+            break;
+
+        case 4: 
+            fundoEscolhido = "PRETO"; // TELA 4 (Labirinto): Preto pra destacar o neon
+            break;
+
+        case 5: 
+            fundoEscolhido = "PRETO"; // TELA 5 (Quiz): Preto pra destacar a bagunça
+            break;
+
+        case 6: 
+            fundoEscolhido = "imagens/explosao.gif"; // TELA 6: Caos total
+            break;
+
+        case 7: 
+            fundoEscolhido = "PRETO";
+            break;
+            
+        default:
+            fundoEscolhido = "PRETO";
+    }
+
+    // --- A MÁGICA ACONTECE AQUI ---
+    if (fundoEscolhido === "PRETO") {
+        // Desliga a imagem e pinta de preto
+        body.style.backgroundImage = "none";
+        body.style.backgroundColor = "#111111"; // Cor quase preta (confortável)
+    } else {
+        // Liga a imagem escolhida
+        body.style.backgroundImage = `url('${fundoEscolhido}')`;
+        // Se quiser garantir que a cor de fundo não atrapalhe se a imagem demorar carregar:
+        body.style.backgroundColor = "#111111"; 
     }
 }
 
@@ -68,49 +121,82 @@ function bloquear() {
 // --- EVENTOS DO MOUSE (Arraste) ---
 
 // 1. Clicou no boneco
-jogador.addEventListener("mousedown", (e) => {
-    if (!jogoAtivo) return;
-    
-    arrastando = true;
-    const rect = jogador.getBoundingClientRect();
-    
-    // Calcula onde clicou dentro da imagem para não "pular"
-    offsetX = e.clientX - rect.left;
-    offsetY = e.clientY - rect.top;
+if (jogador) {
+    jogador.addEventListener("mousedown", (e) => {
+        if (!jogoAtivo) return;
+        
+        arrastando = true;
+        const rect = jogador.getBoundingClientRect();
+        
+        // Calcula onde clicou dentro da imagem para não "pular"
+        offsetX = e.clientX - rect.left;
+        offsetY = e.clientY - rect.top;
 
-    jogador.style.cursor = "grabbing";
-});
+        jogador.style.cursor = "grabbing";
+    });
+}
 
-// 2. Moveu o mouse (No documento todo para não perder o foco)
+// 2. Moveu o mouse (COM CORREÇÃO DE TUNELAMENTO)
 document.addEventListener("mousemove", (e) => {
     if (!arrastando || !jogoAtivo) return;
 
     const areaRect = area.getBoundingClientRect();
 
-    // Calcula posição futura
-    let novoX = e.clientX - areaRect.left - offsetX;
-    let novoY = e.clientY - areaRect.top  - offsetY;
+    // 1. Onde o boneco ESTÁ agora (Posição atual)
+    const atualX = parseFloat(jogador.style.left) || 20;
+    const atualY = parseFloat(jogador.style.top) || 20;
 
-    // Impede que saia da caixa preta (Clamp)
+    // 2. Onde o mouse QUER que o boneco vá (Destino final)
+    let destinoX = e.clientX - areaRect.left - offsetX;
+    let destinoY = e.clientY - areaRect.top  - offsetY;
+
+    // Limites da caixa (Não deixa sair)
     const maxX = area.clientWidth - jogador.clientWidth;
     const maxY = area.clientHeight - jogador.clientHeight;
+    destinoX = Math.max(0, Math.min(destinoX, maxX));
+    destinoY = Math.max(0, Math.min(destinoY, maxY));
 
-    novoX = Math.max(0, Math.min(novoX, maxX));
-    novoY = Math.max(0, Math.min(novoY, maxY));
+    // 3. O SISTEMA ANTI-TUNELAMENTO (Passos curtos)
+    const dx = destinoX - atualX;
+    const dy = destinoY - atualY;
+    const distancia = Math.sqrt(dx*dx + dy*dy);
 
-    // Só aplica o movimento se não houver colisão
-    if (!colideComParede(novoX, novoY)) {
-        jogador.style.left = novoX + "px";
-        jogador.style.top  = novoY + "px";
+    // Divide o movimento em passos de 5 pixels para checar a parede a cada milímetro
+    const passos = Math.ceil(distancia / 5); 
+
+    let ultimoXSeguro = atualX;
+    let ultimoYSeguro = atualY;
+
+    // Simula o movimento passo a passo
+    for (let i = 1; i <= passos; i++) {
+        const t = i / passos;
         
-        verificarVitoria();
+        // Ponto intermediário
+        const testeX = atualX + (dx * t);
+        const testeY = atualY + (dy * t);
+
+        if (colideComParede(testeX, testeY)) {
+            // BATEU! Para aqui mesmo.
+            break; 
+        } else {
+            // Caminho livre, atualiza o último ponto seguro
+            ultimoXSeguro = testeX;
+            ultimoYSeguro = testeY;
+        }
     }
+
+    // 4. Move o boneco apenas até o último lugar seguro
+    jogador.style.left = ultimoXSeguro + "px";
+    jogador.style.top  = ultimoYSeguro + "px";
+
+    // Verifica vitória
+    verificarVitoria();
 });
 
 // 3. Soltou o mouse
 document.addEventListener("mouseup", () => {
     arrastando = false;
-    jogador.style.cursor = "grab";
+    if(jogador) jogador.style.cursor = "grab";
 });
 
 
@@ -212,4 +298,101 @@ function acertoQuiz() {
     sujeira.forEach(img => img.remove());
 
     proximaTela(6);
+}
+
+/* ==========================================================================
+   DESAFIO DAS ESFIHAS (RANKING)
+   ========================================================================== */
+
+let rankingAtual = [];
+const ORDEM_CORRETA = ['M&M', 'Chocolate', 'Doce de leite'];
+
+function escolhaesfihas(esfihas, botaoElemento) {
+    // 1. Adiciona na lista temporária
+    rankingAtual.push(esfihas);
+
+    // 2. Esconde o botão clicado pra não clicar duas vezes
+    botaoElemento.classList.add('btn-escondido');
+
+    // 3. Mostra visualmente no Slot correspondente
+    const slotIndex = rankingAtual.length; // 1, 2 ou 3
+    const slot = document.getElementById(`slot-${slotIndex}`);
+    
+    if (slot) {
+        slot.innerText = esfihas;
+        slot.classList.add('preenchido');
+    }
+
+    // 4. Se já escolheu 3, verifica a resposta
+    if (rankingAtual.length === 3) {
+        setTimeout(verificarRanking, 500); // Espera meio segundo pra verificar
+    }
+}
+
+function verificarRanking() {
+    // Transforma os arrays em texto para comparar 
+    if (JSON.stringify(rankingAtual) === JSON.stringify(ORDEM_CORRETA)) {
+        // ACERTOU!
+        alert("SÁBIO WALLACY: É isso aí! Agora prova que tu é homem.");
+        
+        // --- AQUI VAI PARA A TELA 8 (Abiel) ---
+        proximaTela(8); 
+        
+    } else {
+        // ERROU!
+        alert("WALLACY DIZ: Nada a ver irmão. Tenta de novo.");
+        resetaresfihas();
+    }
+}
+
+function resetaresfihas() {
+    rankingAtual = [];
+    
+    // Limpa os slots
+    for (let i = 1; i <= 3; i++) {
+        const slot = document.getElementById(`slot-${i}`);
+        slot.innerText = `${i}º`;
+        slot.classList.remove('preenchido');
+    }
+
+    // Mostra os botões de volta
+    // OBS: Corrigi apenas o pontinho que faltava na classe abaixo para funcionar
+    document.querySelectorAll('.esfihas').forEach(btn => {
+        btn.classList.remove('btn-escondido');
+    });
+}
+
+/* ==========================================================================
+   TRANSIÇÃO FINAL (CORTINAS)
+   ========================================================================== */
+function iniciarFinal() {
+    const cortinaEsq = document.getElementById('cortina-esquerda');
+    const cortinaDir = document.getElementById('cortina-direita');
+    const imgFinal = document.getElementById('img-final');
+
+    // 1. FECHA AS CORTINAS
+    cortinaEsq.classList.add('fechada');
+    cortinaDir.classList.add('fechada');
+
+    // 2. Espera 1.5s (tempo de fechar)
+    setTimeout(() => {
+        
+        // Troca para a tela 9 (no escuro)
+        proximaTela(9); 
+        
+        // Pausa dramática (0.5s)
+        setTimeout(() => {
+            
+            // 3. ABRE AS CORTINAS
+            cortinaEsq.classList.remove('fechada');
+            cortinaDir.classList.remove('fechada');
+            
+            // 4. FAZ A IMAGEM SURGIR
+            setTimeout(() => {
+                if(imgFinal) imgFinal.classList.add('aparecer');
+            }, 500);
+
+        }, 500);
+
+    }, 1500);
 }
