@@ -1,4 +1,4 @@
-/* CONFIGURAÇÕES GLOBAIS */
+// CONFIGURAÇÕES GLOBAIS
 
 function trollarLogin() {
     alert("Mas é óbvio que esse login não funciona");
@@ -25,7 +25,7 @@ let offsetY = 0;
 
 
 
-/* SISTEMA DE NAVEGAÇÃO */
+//SISTEMA DE NAVEGAÇÃO
 
 function proximaTela(numero) {
     document.querySelectorAll(".tela").forEach(tela => {
@@ -96,7 +96,8 @@ function proximaTela(numero) {
 }
 
 
-/* LÓGICA DO JOGO (LABIRINTO) */
+
+// LÓGICA DO JOGO (LABIRINTO)
 
 function getPos(e) {
     if (e.touches && e.touches.length > 0) {
@@ -140,7 +141,7 @@ function moverPersonagem(e) {
     let destinoX = pos.x - areaRect.left - offsetX;
     let destinoY = pos.y - areaRect.top  - offsetY;
 
-    // --- CORREÇÃO PARA CELULAR
+    // CORREÇÃO PARA CELULAR
     if (areaRect.width < 690) { 
         const escala = 700 / areaRect.width; 
         destinoX *= escala;
@@ -192,6 +193,7 @@ document.addEventListener("mouseup", pararArraste);
 document.addEventListener("touchend", pararArraste);
 
 
+
 // FÍSICA DO JOGO
 
 function colideComParede(x, y) {
@@ -206,9 +208,6 @@ function colideComParede(x, y) {
 
     for (let parede of paredes) {
         const p = parede.getBoundingClientRect();
-        
-        // Ajuste de coordenadas relativas (compatível com a escala do CSS)
-        // Nota: O getBoundingClientRect já pega o tamanho escalado, então a proporção se mantém
         const paredeRelativa = {
             left: p.left - areaRect.left,
             top: p.top - areaRect.top,
@@ -216,7 +215,6 @@ function colideComParede(x, y) {
             bottom: p.bottom - areaRect.top
         };
 
-        // Escala as coordenadas da parede de volta para o mundo "700px" se necessário
         if (areaRect.width < 690) {
             const escala = 700 / areaRect.width;
             paredeRelativa.left *= escala;
@@ -258,30 +256,26 @@ function verificarVitoria() {
     }
 }
 
-/* ==========================================================================
-   SISTEMA DO QUIZ (SHITPOST)
-   ========================================================================== */
 
+
+// SISTEMA DO QUIZ (SHITPOST)
+   
 function erroQuiz() {
-    // 1. Cria elemento
     const novaImagem = document.createElement('img');
-    novaImagem.src = 'imagens/arthur.jpg'; // Sua imagem local
+    novaImagem.src = 'imagens/arthur.jpg'; 
     novaImagem.classList.add('imagem-lixo'); 
     
-    // 2. Define posição aleatória segura
     const tamanho = 200; 
     const x = Math.max(0, Math.random() * (window.innerWidth - tamanho));
     const y = Math.max(0, Math.random() * (window.innerHeight - tamanho));
 
-    // 3. Aplica estilos
     novaImagem.style.position = 'fixed';
     novaImagem.style.left = x + 'px';
     novaImagem.style.top = y + 'px';
     novaImagem.style.width = tamanho + 'px';
     novaImagem.style.zIndex = '9999'; 
-    novaImagem.style.pointerEvents = 'none'; // Permite clicar através
+    novaImagem.style.pointerEvents = 'none';
 
-    // 4. Adiciona e remove
     document.body.appendChild(novaImagem);
 
     setTimeout(() => {
@@ -290,28 +284,24 @@ function erroQuiz() {
 }
 
 function acertoQuiz() {
-    // Limpa a sujeira antes de avançar
     const sujeira = document.querySelectorAll('.imagem-lixo');
     sujeira.forEach(img => img.remove());
 
     proximaTela(6);
 }
 
-/* ==========================================================================
-   DESAFIO DAS ESFIHAS (RANKING)
-   ========================================================================== */
+
+
+// DESAFIO DAS ESFIHAS
 
 let rankingAtual = [];
 const ORDEM_CORRETA = ['M&M', 'Chocolate', 'Doce de leite'];
 
 function escolhaesfihas(esfihas, botaoElemento) {
-    // 1. Adiciona na lista temporária
     rankingAtual.push(esfihas);
 
-    // 2. Esconde o botão clicado pra não clicar duas vezes
     botaoElemento.classList.add('btn-escondido');
 
-    // 3. Mostra visualmente no Slot correspondente
     const slotIndex = rankingAtual.length; // 1, 2 ou 3
     const slot = document.getElementById(`slot-${slotIndex}`);
     
@@ -320,23 +310,16 @@ function escolhaesfihas(esfihas, botaoElemento) {
         slot.classList.add('preenchido');
     }
 
-    // 4. Se já escolheu 3, verifica a resposta
     if (rankingAtual.length === 3) {
-        setTimeout(verificarRanking, 500); // Espera meio segundo pra verificar
+        setTimeout(verificarRanking, 500);
     }
 }
 
 function verificarRanking() {
-    // Transforma os arrays em texto para comparar 
     if (JSON.stringify(rankingAtual) === JSON.stringify(ORDEM_CORRETA)) {
-        // ACERTOU!
         alert("NOOOOSSA");
-        
-        // --- AQUI VAI PARA A TELA 8 (Abiel) ---
-        proximaTela(8); 
-        
+        proximaTela(8);    
     } else {
-        // ERROU!
         resetaresfihas();
     }
 }
@@ -344,46 +327,38 @@ function verificarRanking() {
 function resetaresfihas() {
     rankingAtual = [];
     
-    // Limpa os slots
     for (let i = 1; i <= 3; i++) {
         const slot = document.getElementById(`slot-${i}`);
         slot.innerText = `${i}º`;
         slot.classList.remove('preenchido');
     }
 
-    // Mostra os botões de volta
-    // OBS: Corrigi apenas o pontinho que faltava na classe abaixo para funcionar
-    document.querySelectorAll('.esfihas').forEach(btn => {
+        document.querySelectorAll('.esfihas').forEach(btn => {
         btn.classList.remove('btn-escondido');
     });
 }
 
-/* ==========================================================================
-   TRANSIÇÃO FINAL (CORTINAS)
-   ========================================================================== */
+
+
+// TRANSIÇÃO FINAL (CORTINAS)
+
 function iniciarFinal() {
     const cortinaEsq = document.getElementById('cortina-esquerda');
     const cortinaDir = document.getElementById('cortina-direita');
     const imgFinal = document.getElementById('img-final');
 
-    // 1. FECHA AS CORTINAS
     cortinaEsq.classList.add('fechada');
     cortinaDir.classList.add('fechada');
 
-    // 2. Espera 1.5s (tempo de fechar)
     setTimeout(() => {
         
-        // Troca para a tela 9 (no escuro)
         proximaTela(9); 
         
-        // Pausa dramática (0.5s)
         setTimeout(() => {
             
-            // 3. ABRE AS CORTINAS
             cortinaEsq.classList.remove('fechada');
             cortinaDir.classList.remove('fechada');
             
-            // 4. FAZ A IMAGEM SURGIR
             setTimeout(() => {
                 if(imgFinal) imgFinal.classList.add('aparecer');
             }, 500);
