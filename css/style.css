@@ -503,9 +503,9 @@ button:active {
   z-index: 1000;
 }
 
-/* ==========================================================================
-   RESPONSIVIDADE (CELULAR) - Adicione no final do CSS
-   ========================================================================== */
+
+
+/* CELULAR) */
 @media (max-width: 768px) {
     
     /* 1. Ajusta o container principal */
