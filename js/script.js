@@ -115,94 +115,123 @@ function bloquear() {
 
 
 /* ==========================================================================
-   LÓGICA DO JOGO (LABIRINTO)
+   LÓGICA DO JOGO (LABIRINTO) - VERSÃO HÍBRIDA (PC E CELULAR)
    ========================================================================== */
 
-
-// 1. Clicou no boneco
-if (jogador) {
-    jogador.addEventListener("mousedown", (e) => {
-        if (!jogoAtivo) return;
-        
-        arrastando = true;
-        const rect = jogador.getBoundingClientRect();
-        
-        // Calcula onde clicou dentro da imagem para não "pular"
-        offsetX = e.clientX - rect.left;
-        offsetY = e.clientY - rect.top;
-
-        jogador.style.cursor = "grabbing";
-    });
+// Função auxiliar: Descobre onde está o ponteiro (seja Mouse ou Dedo)
+function getPos(e) {
+    if (e.touches && e.touches.length > 0) {
+        return { x: e.touches[0].clientX, y: e.touches[0].clientY };
+    }
+    return { x: e.clientX, y: e.clientY };
 }
 
-// 2. Moveu o mouse 
-document.addEventListener("mousemove", (e) => {
+// 1. INICIAR ARRASTE (Clicou ou Tocou)
+function iniciarArraste(e) {
+    if (!jogoAtivo) return;
+    
+    // Se for toque, previne comportamentos padrão
+    if (e.type === 'touchstart') {
+        // e.preventDefault(); 
+    }
+
+    arrastando = true;
+    const rect = jogador.getBoundingClientRect();
+    const pos = getPos(e);
+
+    // Calcula onde clicou/tocou dentro do boneco para não "pular"
+    offsetX = pos.x - rect.left;
+    offsetY = pos.y - rect.top;
+
+    jogador.style.cursor = "grabbing";
+}
+
+// Adiciona ouvintes para Mouse E para Toque
+if (jogador) {
+    jogador.addEventListener("mousedown", iniciarArraste);
+    jogador.addEventListener("touchstart", iniciarArraste, {passive: false});
+}
+
+// 2. MOVIMENTO (Arrastando o Mouse ou o Dedo)
+function moverPersonagem(e) {
     if (!arrastando || !jogoAtivo) return;
 
-    const areaRect = area.getBoundingClientRect();
+    // Impede que a tela do site suba/desça (scroll) enquanto joga no celular
+    if (e.type === 'touchmove') e.preventDefault();
 
-    // 1. Onde o boneco ESTÁ agora (Posição atual)
+    const areaRect = area.getBoundingClientRect();
+    const pos = getPos(e);
+
+    // 1. Onde o boneco ESTÁ agora
     const atualX = parseFloat(jogador.style.left) || 20;
     const atualY = parseFloat(jogador.style.top) || 20;
 
-    // 2. Onde o mouse QUER que o boneco vá (Destino final)
-    let destinoX = e.clientX - areaRect.left - offsetX;
-    let destinoY = e.clientY - areaRect.top  - offsetY;
+    // 2. Onde queremos que ele vá (Destino Bruto)
+    let destinoX = pos.x - areaRect.left - offsetX;
+    let destinoY = pos.y - areaRect.top  - offsetY;
 
-    // Limites da caixa (Não deixa sair)
-    const maxX = area.clientWidth - jogador.clientWidth;
-    const maxY = area.clientHeight - jogador.clientHeight;
+    // --- CORREÇÃO MATEMÁTICA PARA CELULAR ---
+    // Se o CSS encolheu o jogo (transform: scale), o boundingClientRect diminui.
+    // Se a largura for menor que a original (690px de margem de segurança), compensamos o movimento.
+    if (areaRect.width < 690) { 
+        const escala = 700 / areaRect.width; 
+        destinoX *= escala;
+        destinoY *= escala;
+    }
+
+    // Limites da caixa (700x350 é o tamanho original interno)
+    const maxX = 700 - 60; 
+    const maxY = 350 - 60;
+    
     destinoX = Math.max(0, Math.min(destinoX, maxX));
     destinoY = Math.max(0, Math.min(destinoY, maxY));
 
-    // 3. O SISTEMA ANTI-TUNELAMENTO (Passos curtos)
+    // 3. O SISTEMA ANTI-TUNELAMENTO (Colisão precisa)
     const dx = destinoX - atualX;
     const dy = destinoY - atualY;
     const distancia = Math.sqrt(dx*dx + dy*dy);
-
-    // Divide o movimento em passos de 5 pixels para checar a parede a cada milímetro
     const passos = Math.ceil(distancia / 5); 
 
     let ultimoXSeguro = atualX;
     let ultimoYSeguro = atualY;
 
-    // Simula o movimento passo a passo
     for (let i = 1; i <= passos; i++) {
         const t = i / passos;
-        
-        // Ponto intermediário
         const testeX = atualX + (dx * t);
         const testeY = atualY + (dy * t);
 
         if (colideComParede(testeX, testeY)) {
-            // BATEU! Para aqui mesmo.
-            break; 
+            break; // Bateu!
         } else {
-            // Caminho livre, atualiza o último ponto seguro
             ultimoXSeguro = testeX;
             ultimoYSeguro = testeY;
         }
     }
 
-    // 4. Move o boneco apenas até o último lugar seguro
+    // 4. Move o boneco
     jogador.style.left = ultimoXSeguro + "px";
     jogador.style.top  = ultimoYSeguro + "px";
 
-    // Verifica vitória
     verificarVitoria();
-});
+}
 
-// 3. Soltou o mouse
-document.addEventListener("mouseup", () => {
+// Ouve o movimento na tela toda (Mouse e Toque)
+document.addEventListener("mousemove", moverPersonagem);
+document.addEventListener("touchmove", moverPersonagem, {passive: false});
+
+// 3. PARAR ARRASTE (Soltou)
+function pararArraste() {
     arrastando = false;
     if(jogador) jogador.style.cursor = "grab";
-});
+}
+
+document.addEventListener("mouseup", pararArraste);
+document.addEventListener("touchend", pararArraste);
 
 
 // --- FÍSICA E COLISÃO ---
 
 function colideComParede(x, y) {
-    // Projeta onde o jogador estaria
     const jogadorFuturo = {
         left: x,
         top: y,
@@ -212,11 +241,11 @@ function colideComParede(x, y) {
 
     const areaRect = area.getBoundingClientRect();
 
-    // Checa colisão com cada parede
     for (let parede of paredes) {
         const p = parede.getBoundingClientRect();
         
-        // Ajusta coordenadas da parede para serem relativas à área de jogo
+        // Ajuste de coordenadas relativas (compatível com a escala do CSS)
+        // Nota: O getBoundingClientRect já pega o tamanho escalado, então a proporção se mantém
         const paredeRelativa = {
             left: p.left - areaRect.left,
             top: p.top - areaRect.top,
@@ -224,7 +253,15 @@ function colideComParede(x, y) {
             bottom: p.bottom - areaRect.top
         };
 
-        // Verifica intersecção (AABB)
+        // Escala as coordenadas da parede de volta para o mundo "700px" se necessário
+        if (areaRect.width < 690) {
+            const escala = 700 / areaRect.width;
+            paredeRelativa.left *= escala;
+            paredeRelativa.top *= escala;
+            paredeRelativa.right *= escala;
+            paredeRelativa.bottom *= escala;
+        }
+
         const bateu = !(
             jogadorFuturo.right < paredeRelativa.left ||
             jogadorFuturo.left > paredeRelativa.right ||
@@ -241,7 +278,6 @@ function verificarVitoria() {
     const j = jogador.getBoundingClientRect();
     const c = chegada.getBoundingClientRect();
 
-    // Verifica intersecção com a chegada
     const tocou = !(
         j.right < c.left ||
         j.left > c.right ||
@@ -250,7 +286,7 @@ function verificarVitoria() {
     );
 
     if (tocou) {
-        jogoAtivo = false; // Trava o jogo
+        jogoAtivo = false;
         arrastando = false;
         
         setTimeout(() => {
@@ -258,7 +294,6 @@ function verificarVitoria() {
         }, 100);
     }
 }
-
 
 /* ==========================================================================
    SISTEMA DO QUIZ (SHITPOST)

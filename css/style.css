@@ -502,3 +502,46 @@ button:active {
   border-top: 1px solid #222;
   z-index: 1000;
 }
+
+/* ==========================================================================
+   RESPONSIVIDADE (CELULAR) - Adicione no final do CSS
+   ========================================================================== */
+@media (max-width: 768px) {
+    
+    /* 1. Ajusta o container principal */
+    .container {
+        width: 95%;
+        padding: 15px;
+        margin: 0 auto;
+    }
+
+    /* 2. Textos menores */
+    h1 { font-size: 1.4rem; }
+    h2 { font-size: 1.1rem; }
+    p { font-size: 0.9rem; }
+
+    /* 3. JOGO DO LABIRINTO (O Pulo do Gato) */
+    /* Como o jogo é fixo em 700px, a gente encolhe ele visualmente */
+    #area-jogo {
+        transform: scale(0.45); /* Reduz para 45% do tamanho */
+        transform-origin: top left;
+        left: 50%;
+        margin-left: -157px; /* Centraliza (Metade da largura reduzida) */
+        margin-bottom: -180px; /* Remove o espaço vazio que sobra embaixo */
+    }
+
+    /* 4. Quiz (Botões um embaixo do outro) */
+    .quiz-grid { grid-template-columns: 1fr; }
+
+    /* 5. Esfihas menores */
+    .slot { width: 70px; height: 70px; font-size: 0.8rem; }
+    .opcoes-esfihas { flex-direction: column; gap: 10px; }
+
+    /* 6. Tela Final no Celular */
+    #img-final {
+        max-width: 95vw; 
+        max-height: 50vh; /* Imagem menor no celular pra caber o título */
+    }
+    .titulo-final { font-size: 1.8rem; }
+    .imagem-do-esqueleto { display: none !important; } /* Esconde esqueleto no mobile */
+}
