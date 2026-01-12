@@ -1,11 +1,11 @@
 /* 1. PALETA GLOBAL*/
 :root {
-  --bg-color: #0a0a0a;             /* Preto quase absoluto */
-  --box-color: rgba(20, 20, 20, 0.95); /* Fundo da caixa semi-transparente */
-  --accent-color: #8a2be2;         /* Roxo mais elegante (BlueViolet) */
-  --accent-hover: #7b1fa2;         /* Roxo mais escuro para hover */
-  --text-color: #f0f0f0;           /* Branco gelo */
-  --text-secondary: #aaaaaa;       /* Cinza para textos menores */
+  --bg-color: #0a0a0a;
+  --box-color: rgba(20, 20, 20, 0.95);
+  --accent-color: #8a2be2;
+  --accent-hover: #7b1fa2;
+  --text-color: #f0f0f0;
+  --text-secondary: #aaaaaa;
   
   /* Sombra suave e moderna */
   --shadow-soft: 0 8px 30px rgba(0, 0, 0, 0.5);
@@ -361,18 +361,18 @@ button:active {
     display: flex !important;
     justify-content: center;
     align-items: center;
-    flex-direction: column; /* Organiza texto em cima da imagem */
+    flex-direction: column; 
     
     position: fixed;
     top: 0; left: 0;
     width: 100vw;
     height: 100vh;
     
-    /* Fundo Escuro com Holofote Central (DRAMÁTICO) */
+    /* Fundo Escuro com Holofote Central */
     background: radial-gradient(circle at center, #2a2a2a 0%, #000000 100%);
     
     z-index: 9990; 
-    overflow: hidden; /* Garante que nada vaze */
+    overflow: hidden; 
 }
 
 /* O Holofote de Luz Atrás da Imagem */
@@ -384,7 +384,7 @@ button:active {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    z-index: -1; /* Fica atrás da imagem */
+    z-index: -1; 
     animation: pulsarLuz 4s infinite alternate;
 }
 
@@ -405,54 +405,43 @@ button:active {
     margin-bottom: 20px;
     text-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
     opacity: 0;
-    animation: subirTexto 1s ease 1s forwards; /* Aparece depois de 1s */
+    animation: subirTexto 1s ease 1s forwards; 
 }
 
 /* A IMAGEM DO TODO PODEROSO */
 #img-final {
-    /* FORÇA FICAR GRANDE */
-    height: 55vh; /* Ocupa 75% da altura da tela */
-    width: auto;  /* Mantém a proporção */
-    max-width: 90vw; /* Não deixa vazar na largura */
-    
-    /* Acabamento Premium */
+    height: 55vh; 
+    width: auto;  
+    max-width: 90vw; 
     border-radius: 15px;
-    border: 4px solid rgba(255, 215, 0, 0.3); /* Borda dourada sutil */
-    
-    /* Sombra Dourada (Glow) */
+    border: 4px solid rgba(255, 215, 0, 0.3); 
     box-shadow: 0 0 40px rgba(255, 215, 0, 0.2), 
                 0 20px 50px rgba(0,0,0,0.8);
-    
-    /* Animação de Entrada */
     opacity: 0;
     transform: scale(0.8);
 }
 
 #img-final.aparecer {
-    /* Animação de entrada + Flutuação contínua */
     animation: 
         entradaTriunfal 2s cubic-bezier(0.2, 0.8, 0.2, 1) forwards,
-        flutuar 3s ease-in-out infinite alternate 2s; /* Começa a flutuar depois de 2s */
+        flutuar 3s ease-in-out infinite alternate 2s;
 }
 
-/* Animação 1: Entrada */
 @keyframes entradaTriunfal {
     to { opacity: 1; transform: scale(1); }
 }
 
-/* Animação 2: Flutuar (Respiração) */
 @keyframes flutuar {
     0% { transform: translateY(0); }
     100% { transform: translateY(-15px); }
 }
 
-/* Animação de Texto */
 @keyframes subirTexto {
     from { opacity: 0; transform: translateY(20px); }
     to { opacity: 1; transform: translateY(0); }
 }
 
-/* --- CONFETES (PARTÍCULAS) --- */
+/* CONFETES */
 .confete {
     position: absolute;
     width: 10px; height: 10px;
@@ -472,7 +461,7 @@ button:active {
     100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
 }
 
-/* AS CORTINAS (VERMELHO VELUDO) - MANTIDO */
+/* AS CORTINAS */
 .cortina {
     position: fixed;
     top: 0; bottom: 0;
@@ -488,7 +477,7 @@ button:active {
 
 
 
-/* 11. FOOTER (RODAPÉ) */
+/* 11. FOOTER  */
 .footer {
   position: fixed;
   bottom: 0;
@@ -506,42 +495,31 @@ button:active {
 
 
 /* CELULAR) */
-@media (max-width: 768px) {
-    
-    /* 1. Ajusta o container principal */
+@media (max-width: 768px) { 
     .container {
         width: 95%;
         padding: 15px;
         margin: 0 auto;
     }
-
-    /* 2. Textos menores */
     h1 { font-size: 1.4rem; }
     h2 { font-size: 1.1rem; }
     p { font-size: 0.9rem; }
 
-    /* 3. JOGO DO LABIRINTO (O Pulo do Gato) */
-    /* Como o jogo é fixo em 700px, a gente encolhe ele visualmente */
     #area-jogo {
-        transform: scale(0.45); /* Reduz para 45% do tamanho */
+        transform: scale(0.45); 
         transform-origin: top left;
         left: 50%;
-        margin-left: -157px; /* Centraliza (Metade da largura reduzida) */
-        margin-bottom: -180px; /* Remove o espaço vazio que sobra embaixo */
+        margin-left: -157px; 
+        margin-bottom: -180px;
     }
 
-    /* 4. Quiz (Botões um embaixo do outro) */
     .quiz-grid { grid-template-columns: 1fr; }
-
-    /* 5. Esfihas menores */
     .slot { width: 70px; height: 70px; font-size: 0.8rem; }
     .opcoes-esfihas { flex-direction: column; gap: 10px; }
-
-    /* 6. Tela Final no Celular */
     #img-final {
         max-width: 95vw; 
-        max-height: 50vh; /* Imagem menor no celular pra caber o título */
+        max-height: 50vh; 
     }
     .titulo-final { font-size: 1.8rem; }
-    .imagem-do-esqueleto { display: none !important; } /* Esconde esqueleto no mobile */
+    .imagem-do-esqueleto { display: none !important; } 
 }
