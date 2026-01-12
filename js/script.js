@@ -59,39 +59,39 @@ function proximaTela(numero) {
 
     switch (numero) {
         case 1: 
-            fundoEscolhido = "imagens/fundo-hacker.jpg"; // TELA 1: Tem imagem
+            fundoEscolhido = "preto";
             break;
             
         case 2: 
-            fundoEscolhido = "imagens/auu.jpg"; // TELA 2: Fundo preto liso
+            fundoEscolhido = "preto"; 
             break;
 
         case 3: 
-            fundoEscolhido = "imagens/bar-do-moeda.jpg"; // TELA 3: Imagem de novo
+            fundoEscolhido = "preto"; 
             break;
 
         case 4: 
-            fundoEscolhido = "PRETO"; // TELA 4 (Labirinto): Preto pra destacar o neon
+            fundoEscolhido = "preto"; 
             break;
 
         case 5: 
-            fundoEscolhido = "PRETO"; // TELA 5 (Quiz): Preto pra destacar a bagunça
+            fundoEscolhido = "preto"; 
             break;
 
         case 6: 
-            fundoEscolhido = "imagens/explosao.gif"; // TELA 6: Caos total
+            fundoEscolhido = "preto"; 
             break;
 
         case 7: 
-            fundoEscolhido = "PRETO";
+            fundoEscolhido = "preto";
             break;
             
         default:
-            fundoEscolhido = "PRETO";
+            fundoEscolhido = "preto";
     }
 
     // --- A MÁGICA ACONTECE AQUI ---
-    if (fundoEscolhido === "PRETO") {
+    if (fundoEscolhido === "preto") {
         // Desliga a imagem e pinta de preto
         body.style.backgroundImage = "none";
         body.style.backgroundColor = "#111111"; // Cor quase preta (confortável)
@@ -118,7 +118,6 @@ function bloquear() {
    LÓGICA DO JOGO (LABIRINTO)
    ========================================================================== */
 
-// --- EVENTOS DO MOUSE (Arraste) ---
 
 // 1. Clicou no boneco
 if (jogador) {
@@ -136,7 +135,7 @@ if (jogador) {
     });
 }
 
-// 2. Moveu o mouse (COM CORREÇÃO DE TUNELAMENTO)
+// 2. Moveu o mouse 
 document.addEventListener("mousemove", (e) => {
     if (!arrastando || !jogoAtivo) return;
 
@@ -333,14 +332,13 @@ function verificarRanking() {
     // Transforma os arrays em texto para comparar 
     if (JSON.stringify(rankingAtual) === JSON.stringify(ORDEM_CORRETA)) {
         // ACERTOU!
-        alert("SÁBIO WALLACY: É isso aí! Agora prova que tu é homem.");
+        alert("NOOOOSSA");
         
         // --- AQUI VAI PARA A TELA 8 (Abiel) ---
         proximaTela(8); 
         
     } else {
         // ERROU!
-        alert("WALLACY DIZ: Nada a ver irmão. Tenta de novo.");
         resetaresfihas();
     }
 }

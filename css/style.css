@@ -1,6 +1,4 @@
-/* ==========================================================================
-   1. VARIÁVEIS GLOBAIS (PALETA MODERNA)
-   ========================================================================== */
+/* 1. PALETA GLOBAL*/
 :root {
   --bg-color: #0a0a0a;             /* Preto quase absoluto */
   --box-color: rgba(20, 20, 20, 0.95); /* Fundo da caixa semi-transparente */
@@ -14,9 +12,9 @@
   --shadow-neon: 0 0 15px rgba(138, 43, 226, 0.4);
 }
 
-/* ==========================================================================
-   2. CONFIGURAÇÕES GERAIS E RESET
-   ========================================================================== */
+
+
+/* 2. CONFIGURAÇÃO GERAL */
 * {
   box-sizing: border-box; 
 }
@@ -46,9 +44,9 @@ h1, h2 {
   margin-bottom: 20px;
 }
 
-/* ==========================================================================
-   3. BARRA DE NAVEGAÇÃO (NAVBAR)
-   ========================================================================== */
+
+
+/* 3. NAV */
 .navbar {
   position: fixed;
   top: 0;
@@ -86,9 +84,9 @@ h1, h2 {
   text-shadow: 0 0 8px rgba(138, 43, 226, 0.5);
 }
 
-/* ==========================================================================
-   4. LAYOUT E CONTAINER PRINCIPAL
-   ========================================================================== */
+
+
+/* 4. CONTAINER PRINCIPAL*/
 .layout {
   display: flex;
   justify-content: center;
@@ -122,9 +120,9 @@ h1, h2 {
   width: 100%;      
 }
 
-/* ==========================================================================
-   5. ELEMENTOS DE INTERFACE (Botões e Inputs)
-   ========================================================================== */
+
+
+/* 5. BOTÕES E INPUTS */
 input {
   width: 100%;
   padding: 15px;
@@ -171,9 +169,9 @@ button:active {
   transform: translateY(0);
 }
 
-/* ==========================================================================
-   6. CONTROLE DAS TELAS
-   ========================================================================== */
+
+
+/* 6. CONTROLE DAS TELAS */
 .tela {
   display: none;
 }
@@ -188,9 +186,9 @@ button:active {
   to   { opacity: 1; transform: translateY(0); }
 }
 
-/* ==========================================================================
-   7. IMAGENS GERAIS
-   ========================================================================== */
+
+
+/*7. IMAGEM DO ESQUELETO */
 .imagem-do-esqueleto {
   width: 350px; 
   height: auto;
@@ -200,9 +198,9 @@ button:active {
   display: none; 
 }
 
-/* ==========================================================================
-   8. JOGO DO WALLACY (LABIRINTO)
-   ========================================================================== */
+
+
+/* 8. DESAFIO DO LABIRINTO */
 #area-jogo {
     position: relative;
     width: 700px;
@@ -262,9 +260,9 @@ button:active {
     border-radius: 10px 0 0 10px;
 }
 
-/* ==========================================================================
-   9. QUIZ
-   ========================================================================== */
+
+
+/* 9. QUIZ */
 .pergunta-texto {
     font-size: 1.5rem;
     color: var(--accent-color);
@@ -297,9 +295,9 @@ button:active {
     }
 }
 
-/* ==========================================================================
-   10. DESAFIO DAS ESFIHAS
-   ========================================================================== */
+
+
+/* 10. DESAFIO DAS ESFIHAS */
 .slots-container {
     display: flex;
     justify-content: center;
@@ -356,33 +354,9 @@ button:active {
     transform: scale(0.8);
 }
 
-/* ==========================================================================
-   11. FOOTER (RODAPÉ)
-   ========================================================================== */
-.footer {
-  position: fixed;
-  bottom: 0;
-  left: 0; 
-  width: 100%;
-  background-color: #050505;
-  color: #666;
-  padding: 15px 0;
-  text-align: center;
-  font-size: 0.85rem;
-  border-top: 1px solid #222;
-  z-index: 1000;
-}
 
 
-/* ==========================================================================
-   12. TELA 9 (O FINAL SUPREMO) E CORTINAS
-   ========================================================================== */
-
-/* ==========================================================================
-   12. TELA 9 (FINAL ÉPICO - DARK & GOLD)
-   ========================================================================== */
-
-/* A TELA 9 - O AMBIENTE */
+/* EFEITOS DA TELA 9 */
 #tela-9.ativa {
     display: flex !important;
     justify-content: center;
@@ -511,3 +485,20 @@ button:active {
 #cortina-esquerda { left: 0; }
 #cortina-direita { right: 0; }
 .cortina.fechada { width: 50.5%; }
+
+
+
+/* 11. FOOTER (RODAPÉ) */
+.footer {
+  position: fixed;
+  bottom: 0;
+  left: 0; 
+  width: 100%;
+  background-color: #050505;
+  color: #666;
+  padding: 15px 0;
+  text-align: center;
+  font-size: 0.85rem;
+  border-top: 1px solid #222;
+  z-index: 1000;
+}
